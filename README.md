@@ -24,23 +24,22 @@ This Terraform workspace provisions Azure resources including a resource group, 
    az account list
    az account set --subscription "YOUR_SUBSCRIPTION_ID"
    ```
-1.1  use Azure cli to create service principal with contributor permissions on current subscription
+2.  **Create Service Principal with Contributor Role in current subscription**:
+   ```bash
    az ad sp create-for-rbac --name "terraform-sp-$(date +%s)" --role Contributor --scopes /subscriptions/$(az account show --query id -o tsv)
+   ```
 
-
-   
-
-2. **Initialize Terraform**:
+3. **Initialize Terraform**:
    ```bash
    terraform init
    ```
 
-3. **Create variables file**:
+4. **Create variables file**:
    ```bash
    cp terraform.example.tfvars terraform.dev.tfvars
    ```
 
-4. **Update `terraform.dev.tfvars`** with your values:
+5. **Update `terraform.dev.tfvars`** with your values:
    - Set your subscription ID
    - Choose appropriate names and configuration
 
