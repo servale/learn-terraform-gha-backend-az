@@ -1,4 +1,4 @@
-# Terraform for Azure - Resource Group, Storage Account & Blob Container
+# Terraform for Azure - Resource Group, Storage Account & Blob Container for the backend
 
 This Terraform workspace provisions Azure resources including a resource group, storage account, and blob container with support for application and environment variables.
 
