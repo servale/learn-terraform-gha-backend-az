@@ -6,6 +6,7 @@ This Terraform workspace provisions Azure resources including a resource group, 
 - enable blob versioning and 30 day soft delete - DONE
 - Locking down storage account to a specific Entra group: TFStateReadOnly and TFStateAdmins
 -- calling data for each group using displayname defined by variable
+- rewrite Readme file
 
 ## Resources Created
 
