@@ -1,6 +1,9 @@
 # scripts with variables
 scripts/*.sh
 
+# VS Code workspace settings
+*.code-workspace
+
 # Terraform state files
 *.tfstate
 *.tfstate.*
