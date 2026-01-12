@@ -1,5 +1,8 @@
-# BACKEND INFRASTRUCTURE RESOURCES
+data "azurerm_client_config" "current" {}
 
+# ====================================================
+# BACKEND INFRASTRUCTURE RESOURCES
+# ====================================================
 resource "azurerm_resource_group" "main" {
   name     = "rg-${var.application_name}-${var.environment_name}-state"
   location = var.primary_location
@@ -13,16 +16,18 @@ resource "azurerm_resource_group" "main" {
     }
   )
 }
-
+# ====================================================
 # RANDOM STRING FOR STORAGE ACCOUNT NAME
-
+# ====================================================
 resource "random_string" "suffix" {
   length  = 10
   upper   = false
   special = false
 }
 
+# ====================================================
 # STORAGE ACCOUNT AND BLOB CONTAINER
+# ====================================================
 
 resource "azurerm_storage_account" "main" {
   name                     = "st${random_string.suffix.result}"
