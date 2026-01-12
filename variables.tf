@@ -56,3 +56,15 @@ variable "tags" {
     managed_by = "terraform"
   }
 }
+
+# OIDC VARIABLES FOR GITHUB ACTIONS
+
+variable "github_org" {
+  description = "GitHub organization name"
+  type        = string
+}
+
+variable "github_repo" {
+  description = "GitHub repository name"
+  type        = string
+}
