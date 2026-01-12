@@ -1,5 +1,5 @@
 
-data "azurerm_client_config" "current" {}
+data "azurerm_subscription" "current" {}
 
 # ==============================================
 # SP1: Main Branch Apply (Contributor Role)
@@ -27,7 +27,7 @@ resource "azuread_application_federated_identity_credential" "main_apply_main_br
 
 # RBAC: Contributor for apply operations
 resource "azurerm_role_assignment" "main_apply_contributor" {
-  scope                = data.azurerm_client_config.current.subscription_id
+  scope                = data.azurerm_subscription.current.id
   principal_id         = azuread_service_principal.main_apply.object_id
   role_definition_name = "Contributor"
 }
@@ -58,7 +58,7 @@ resource "azuread_application_federated_identity_credential" "all_branches_plan_
 
 # RBAC: Reader for plan operations only
 resource "azurerm_role_assignment" "all_branches_plan_reader" {
-  scope                = data.azurerm_client_config.current.subscription_id
+  scope                = data.azurerm_subscription.current.id
   principal_id         = azuread_service_principal.all_branches_plan.object_id
   role_definition_name = "Reader"
 }
