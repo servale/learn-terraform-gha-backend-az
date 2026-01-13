@@ -1,19 +1,10 @@
 # ====================================================
 # Backend Infrastructure Outputs
 # ====================================================
-output "resource_group_id" {
-  value       = azurerm_resource_group.state.id
-  description = "The ID of the created resource group"
-}
 
 output "resource_group_name" {
   value       = azurerm_resource_group.state.name
   description = "The name of the created resource group"
-}
-
-output "storage_account_id" {
-  value       = azurerm_storage_account.state.id
-  description = "The ID of the created storage account"
 }
 
 output "storage_account_name" {
@@ -21,15 +12,19 @@ output "storage_account_name" {
   description = "The name of the created storage account"
 }
 
-output "blob_container_id" {
-  value       = azurerm_storage_container.state.id
-  description = "The ID of the created blob container"
-}
 output "blob_container_name" {
   value       = azurerm_storage_container.state.name
   description = "The name of the created blob container"
 }
 
+output "test_out_map" {
+  value = {
+    resource_group_name  = azurerm_resource_group.state.name
+    container_name       = azurerm_storage_container.state.name
+    storage_account_name = azurerm_storage_account.state.name
+  }
+  description = "Map of backend infrastructure names"
+}
 # ====================================================
 # Environment Information
 # ====================================================
