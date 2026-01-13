@@ -19,9 +19,9 @@ output "blob_container_name" {
 
 output "test_out_map" {
   value = {
-    resource_group_name  = azurerm_resource_group.state.name
-    container_name       = azurerm_storage_container.state.name
-    storage_account_name = azurerm_storage_account.state.name
+    "1_resource_group_name" = azurerm_resource_group.state.name
+    container_name          = azurerm_storage_container.state.name
+    storage_account_name    = azurerm_storage_account.state.name
   }
   description = "Map of backend infrastructure names"
 }
