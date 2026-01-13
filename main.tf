@@ -35,6 +35,7 @@ resource "azurerm_storage_account" "state" {
   location                 = azurerm_resource_group.state.location
   account_tier             = var.storage_account_tier
   account_replication_type = var.storage_replication_type
+  # storage replicsation_type by default is set to LRS in HCP
 
   # Enable secure transfer
   https_traffic_only_enabled = true
@@ -44,10 +45,12 @@ resource "azurerm_storage_account" "state" {
 
   blob_properties {
     versioning_enabled = true
-
+    # disabling 30 days soft delete since this is a demo environment. 
+    /*
     delete_retention_policy {
       days = 30
     }
+    */
   }
 
   tags = merge(
