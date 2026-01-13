@@ -3,7 +3,7 @@ data "azurerm_client_config" "current" {}
 # ====================================================
 # BACKEND INFRASTRUCTURE RESOURCES
 # ====================================================
-resource "azurerm_resource_group" "main" {
+resource "azurerm_resource_group" "state" {
   name     = "rg-${var.application_name}-${var.environment_name}-state"
   location = var.primary_location
 
@@ -29,10 +29,10 @@ resource "random_string" "suffix" {
 # STORAGE ACCOUNT AND BLOB CONTAINER
 # ====================================================
 
-resource "azurerm_storage_account" "main" {
+resource "azurerm_storage_account" "state" {
   name                     = "st${random_string.suffix.result}"
-  resource_group_name      = azurerm_resource_group.main.name
-  location                 = azurerm_resource_group.main.location
+  resource_group_name      = azurerm_resource_group.state.name
+  location                 = azurerm_resource_group.state.location
   account_tier             = var.storage_account_tier
   account_replication_type = var.storage_replication_type
 
@@ -63,8 +63,8 @@ resource "azurerm_storage_account" "main" {
   }
 }
 
-resource "azurerm_storage_container" "main" {
+resource "azurerm_storage_container" "state" {
   name                  = var.blob_container_name
-  storage_account_id    = azurerm_storage_account.main.id
+  storage_account_id    = azurerm_storage_account.state.id
   container_access_type = lower(var.blob_access_type)
 }
