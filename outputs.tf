@@ -72,12 +72,6 @@ output "main_apply_object_id" {
   value       = azuread_service_principal.main_apply.object_id
 }
 
-output "main_apply_application_id" {
-  description = "Application (client) ID of the main apply app registration"
-  value       = azuread_application.main_apply.client_id
-  sensitive   = true
-}
-
 # ====================================================
 # SP2: All Branches Plan-Only Credentials
 # ====================================================
@@ -91,12 +85,6 @@ output "plan_client_id" {
 output "plan_object_id" {
   description = "Service Principal Object ID for plan SP (used for RBAC assignments)"
   value       = azuread_service_principal.all_branches_plan.object_id
-}
-
-output "plan_application_id" {
-  description = "Application (client) ID of the plan-only app registration"
-  value       = azuread_application.all_branches_plan.client_id
-  sensitive   = true
 }
 
 # ====================================================
