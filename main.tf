@@ -1,23 +1,41 @@
-resource "azurerm_resource_group" "main" {
-  name       = var.resource_group_name
-  location   = var.location
-  depends_on = []
+data "azurerm_client_config" "current" {}
+
+# ====================================================
+# BACKEND INFRASTRUCTURE RESOURCES
+# ====================================================
+resource "azurerm_resource_group" "state" {
+  name     = "rg-${var.application_name}-${var.environment_name}-state"
+  location = var.primary_location
+
 
   tags = merge(
     var.tags,
     {
-      Environment = var.environment
-      Project     = var.project_name
+      Environment = var.environment_name
+      Project     = var.application_name
     }
   )
 }
+# ====================================================
+# RANDOM STRING FOR STORAGE ACCOUNT NAME
+# ====================================================
+resource "random_string" "suffix" {
+  length  = 10
+  upper   = false
+  special = false
+}
 
-resource "azurerm_storage_account" "main" {
-  name                     = var.storage_account_name
-  resource_group_name      = azurerm_resource_group.main.name
-  location                 = azurerm_resource_group.main.location
+# ====================================================
+# STORAGE ACCOUNT AND BLOB CONTAINER
+# ====================================================
+
+resource "azurerm_storage_account" "state" {
+  name                     = "st${random_string.suffix.result}"
+  resource_group_name      = azurerm_resource_group.state.name
+  location                 = azurerm_resource_group.state.location
   account_tier             = var.storage_account_tier
   account_replication_type = var.storage_replication_type
+  # storage replicsation_type by default is set to LRS in HCP
 
   # Enable secure transfer
   https_traffic_only_enabled = true
@@ -25,11 +43,21 @@ resource "azurerm_storage_account" "main" {
   # Minimum TLS version
   min_tls_version = "TLS1_2"
 
+  blob_properties {
+    versioning_enabled = true
+    # disabling 30 days soft delete since this is a demo environment. 
+    /*
+    delete_retention_policy {
+      days = 30
+    }
+    */
+  }
+
   tags = merge(
     var.tags,
     {
-      Environment = var.environment
-      Project     = var.project_name
+      Environment = var.environment_name
+      Project     = var.application_name
     }
   )
 
@@ -38,42 +66,8 @@ resource "azurerm_storage_account" "main" {
   }
 }
 
-resource "azurerm_storage_container" "main" {
+resource "azurerm_storage_container" "state" {
   name                  = var.blob_container_name
-  storage_account_name  = azurerm_storage_account.main.name
+  storage_account_id    = azurerm_storage_account.state.id
   container_access_type = lower(var.blob_access_type)
-}
-
-# Optional: Create a blob for application configuration
-resource "azurerm_storage_blob" "app_config" {
-  name                   = "app-config.json"
-  storage_account_name   = azurerm_storage_account.main.name
-  storage_container_name = azurerm_storage_container.main.name
-  type                   = "Block"
-  content_type           = "application/json"
-
-  source_content = jsonencode({
-    application = var.application_config
-    environment = var.environment
-    variables   = var.environment_variables
-  })
-}
-
-# Optional: Storage account access keys output (use with caution)
-resource "azurerm_storage_account_blob_container_sas" "main" {
-  connection_string = azurerm_storage_account.main.primary_connection_string
-  container_name    = azurerm_storage_container.main.name
-  https_only        = true
-  
-  start  = timestamp()
-  expiry = timeadd(timestamp(), "8760h") # 1 year
-
-  permissions {
-    read   = true
-    add    = false
-    create = false
-    write  = false
-    delete = false
-    list   = true
-  }
 }
