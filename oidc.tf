@@ -15,10 +15,10 @@ resource "azuread_service_principal" "main_apply" {
 }
 
 # Main branch only: repo:org/repo:ref:refs/heads/main
-resource "azuread_application_federated_identity_credential" "main_apply_main_branch" {
+resource "azuread_application_federated_identity_credential" "main_apply" {
   application_id = azuread_application.main_apply.id
-  display_name   = "${var.github_org}-${var.github_repo}-${var.environment_name}-main-branch"
-  description    = "GitHub main branch only"
+  display_name   = "${var.github_org}-${var.github_repo}-${var.environment_name}-main-apply"
+  description    = "For terraform apply on GitHub main branch (when merged)"
 
   audiences = ["api://AzureADTokenExchange"]
   issuer    = "https://token.actions.githubusercontent.com"
@@ -36,20 +36,20 @@ resource "azurerm_role_assignment" "main_apply_contributor" {
 # SP2: All Branches Plan (Reader Role)
 # ===============================================
 
-resource "azuread_application" "all_branches_plan" {
-  display_name = "github-${var.github_org}-${var.github_repo}-${var.environment_name}-plan-only"
-  description  = "GitHub all branches/PRs Terraform plan (Reader)"
+resource "azuread_application" "main_plan" {
+  display_name = "github-${var.github_org}-${var.github_repo}-${var.environment_name}-main-plan-"
+  description  = "GitHub main branch Terraform plan (Reader)"
 }
 
-resource "azuread_service_principal" "all_branches_plan" {
-  client_id = azuread_application.all_branches_plan.client_id
+resource "azuread_service_principal" "main_plan" {
+  client_id = azuread_application.main_plan.client_id
 }
 
 # Pull requests: repo:org/repo:pull_request
-resource "azuread_application_federated_identity_credential" "all_branches_plan_pr" {
-  application_id = azuread_application.all_branches_plan.id
-  display_name   = "${var.github_org}-${var.github_repo}-${var.environment_name}-pull-requests"
-  description    = "GitHub pull requests (plan only)"
+resource "azuread_application_federated_identity_credential" "main_plan" {
+  application_id = azuread_application.main_plan.id
+  display_name   = "${var.github_org}-${var.github_repo}-${var.environment_name}-main-plan"
+  description    = "For terraform plan on GitHub main branch (when making pull request)"
 
   audiences = ["api://AzureADTokenExchange"]
   issuer    = "https://token.actions.githubusercontent.com"
@@ -57,8 +57,8 @@ resource "azuread_application_federated_identity_credential" "all_branches_plan_
 }
 
 # RBAC: Reader for plan operations only
-resource "azurerm_role_assignment" "all_branches_plan_reader" {
+resource "azurerm_role_assignment" "main_plan_reader" {
   scope                = data.azurerm_subscription.current.id
-  principal_id         = azuread_service_principal.all_branches_plan.object_id
+  principal_id         = azuread_service_principal.main_plan.object_id
   role_definition_name = "Reader"
 }
