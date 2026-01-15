@@ -17,7 +17,7 @@ output "blob_container_name" {
   description = "The name of the created blob container"
 }
 */
-output "Backend Values" {
+output "Backend_Values" {
   value = {
     "1. ARM_TENANT_ID"        = data.azurerm_client_config.current.tenant_id
     "2. ARM_SUBSCRIPTION_ID"  = data.azurerm_client_config.current.subscription_id
@@ -33,7 +33,7 @@ output "Backend Values" {
 # Environment Information
 # ====================================================
 
-output "Environment Information" {
+output "Environment_Information" {
   value = {
     environment = var.environment_name
     location    = var.primary_location
@@ -71,7 +71,7 @@ output "main_apply_object_id" {
   value       = azuread_service_principal.main_apply.object_id
 }
 */
-output "OIDC Apply and Plan values" {
+output "OIDC_Apply_and_Plan_values" {
   value = {
     "1. PLAN_CLIENT_ID"       = azuread_service_principal.main_plan.client_id
     "2. PLAN_OBJECT_ID"       = azuread_service_principal.main_plan.object_id
