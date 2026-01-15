@@ -37,7 +37,7 @@ resource "azurerm_role_assignment" "main_apply_contributor" {
 # ===============================================
 
 resource "azuread_application" "main_plan" {
-  display_name = "github-${var.github_org}-${var.github_repo}-${var.environment_name}-main-plan-"
+  display_name = "github-${var.github_org}-${var.github_repo}-${var.environment_name}-main-plan"
   description  = "GitHub main branch Terraform plan (Reader)"
 }
 
