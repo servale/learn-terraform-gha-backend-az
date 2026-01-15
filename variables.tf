@@ -17,6 +17,7 @@ variable "primary_location" {
 variable "application_name" {
   type        = string
   description = "Application name for resource naming"
+  default     = "backend"
 }
 
 variable "storage_account_tier" {
@@ -38,6 +39,7 @@ variable "storage_replication_type" {
 variable "blob_container_name" {
   type        = string
   description = "Name of the blob container"
+  default     = "tfstate"
 }
 
 variable "blob_access_type" {
