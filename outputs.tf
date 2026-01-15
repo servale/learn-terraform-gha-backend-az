@@ -4,11 +4,11 @@
 
 output "Backend_Values" {
   value = {
-    "1. ARM_TENANT_ID"        = data.azurerm_client_config.current.tenant_id
-    "2. ARM_SUBSCRIPTION_ID"  = data.azurerm_client_config.current.subscription_id
-    "3. RESOURCE_GROUP_NAME"  = azurerm_resource_group.state.name
-    "4. STORAGE_ACCOUNT_NAME" = azurerm_storage_account.state.name
-    "5. CONTAINER_NAME"       = azurerm_storage_container.state.name
+    "1. AZURE_TENANT_ID"       = data.azurerm_client_config.current.tenant_id
+    "2. AZURE_SUBSCRIPTION_ID" = data.azurerm_client_config.current.subscription_id
+    "3. RESOURCE_GROUP_NAME"   = azurerm_resource_group.state.name
+    "4. STORAGE_ACCOUNT_NAME"  = azurerm_storage_account.state.name
+    "5. CONTAINER_NAME"        = azurerm_storage_container.state.name
   }
   description = "Map of backend values (Add to GitHub Secrets)"
 }
@@ -32,10 +32,10 @@ output "Environment_Information" {
 
 output "Credential_Info" {
   value = {
-    "1. PLAN_CLIENT_ID"       = azuread_service_principal.main_plan.client_id
-    "2. Pull Request Subject" = "repo:${var.github_org}/${var.github_repo}:pull_request"
-    "3. APPLY_CLIENT_ID"      = azuread_service_principal.main_apply.client_id
-    "4. Main Branch Subject"  = "repo:${var.github_org}/${var.github_repo}:ref:refs/heads/main"
+    "1. AZURE_CLIENT_ID_PLAN"  = azuread_service_principal.main_plan.client_id
+    "2. Pull Request Subject"  = "repo:${var.github_org}/${var.github_repo}:pull_request"
+    "3. AZURE_CLIENT_ID_APPLY" = azuread_service_principal.main_apply.client_id
+    "4. Main Branch Subject"   = "repo:${var.github_org}/${var.github_repo}:ref:refs/heads/main"
 
   }
   description = "Map of terraform apply service principal values"
