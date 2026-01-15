@@ -1,0 +1,25 @@
+name: Sync main to dev
+on:
+  pull_request:
+    branches:
+      - main
+    types: [closed]
+
+jobs:
+  sync-branches:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Merge main to dev
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout dev
+          git merge origin/main --no-ff -m "Auto-sync main to dev"
+          git push origin dev
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
