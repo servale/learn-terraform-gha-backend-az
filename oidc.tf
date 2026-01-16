@@ -67,5 +67,5 @@ resource "azurerm_role_assignment" "main_plan_reader" {
 resource "azurerm_role_assignment" "main_plan_storage_contributor" {
   scope                = azurerm_storage_container.state.id
   principal_id         = azuread_service_principal.main_plan.object_id
-  role_definition_name = "Storage Blob Contributor"
+  role_definition_name = "Storage Blob Data Contributor"
 }
