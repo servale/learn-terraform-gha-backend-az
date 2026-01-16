@@ -32,6 +32,13 @@ resource "azurerm_role_assignment" "main_apply_contributor" {
   role_definition_name = "Contributor"
 }
 
+# RBAC: Storage Blob Contributor for terraform backend initialization
+resource "azurerm_role_assignment" "main_apply_storage_contributor" {
+  scope                = azurerm_storage_container.state.id
+  principal_id         = azuread_service_principal.main_apply.object_id
+  role_definition_name = "Storage Blob Data Contributor"
+}
+
 # ===============================================
 # SP2: All Branches Plan (Reader Role)
 # ===============================================
